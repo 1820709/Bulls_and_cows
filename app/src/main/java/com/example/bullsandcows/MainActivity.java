@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     Random rnd;
     int guessA = 1, guessB = 2, guessC = 3, guessD = 4;
     int randomA, randomB, randomC, randomD;
-    int bulls = 0, cows = 0, tries = 0;
+    int bulls = 0, cows = 0, tries = 0, maxTries = 20;
     String outputTxt = "";
 
     @Override
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     guessA = 9;
                 }
                 txt_number_a.setText(""+guessA);
+                txt_info.setText("");
             }
         });
 
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                     guessB = 9;
                 }
                 txt_number_b.setText(""+guessB);
+                txt_info.setText("");
             }
         });
 
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     guessC = 9;
                 }
                 txt_number_c.setText(""+guessC);
+                txt_info.setText("");
             }
         });
 
@@ -118,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                     guessD = 9;
                 }
                 txt_number_d.setText(""+guessD);
+                txt_info.setText("");
             }
         });
 
@@ -131,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     guessA = 0;
                 }
                 txt_number_a.setText(""+guessA);
+                txt_info.setText("");
             }
         });
 
@@ -143,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     guessB = 0;
                 }
                 txt_number_b.setText(""+guessB);
+                txt_info.setText("");
             }
         });
 
@@ -155,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     guessC = 0;
                 }
                 txt_number_c.setText(""+guessC);
+                txt_info.setText("");
             }
         });
 
@@ -167,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                     guessD = 0;
                 }
                 txt_number_d.setText(""+guessD);
+                txt_info.setText("");
             }
         });
 
@@ -174,15 +182,7 @@ public class MainActivity extends AppCompatActivity {
         btn_reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                guessA = 1;
-                guessB = 2;
-                guessC = 3;
-                guessD = 4;
-                txt_info.setText("Try again! The number was: " + randomA+randomB+randomC+randomD);
-                txt_number_a.setText(""+guessA);
-                txt_number_b.setText(""+guessB);
-                txt_number_c.setText(""+guessC);
-                txt_number_d.setText(""+guessD);
+                resetGame("Try again! The number was: " + randomA+randomB+randomC+randomD);
             }
         });
 
@@ -202,9 +202,32 @@ public class MainActivity extends AppCompatActivity {
                     txt_output.setText(outputTxt);
                     bulls = 0;
                     cows = 0;
+                    if (tries == maxTries) {
+                        txt_info.setText("Too many tries! The number was: " + randomA+randomB+randomC+randomD);
+                        btn_match.setEnabled(false);
+                    }
                 }
             }
         });
+    }
+
+    private void resetGame(String msg) {
+        guessA = 1;
+        guessB = 2;
+        guessC = 3;
+        guessD = 4;
+        bulls = 0;
+        cows = 0;
+        tries = 0;
+        outputTxt = "";
+        txt_info.setText(msg);
+        txt_number_a.setText(""+guessA);
+        txt_number_b.setText(""+guessB);
+        txt_number_c.setText(""+guessC);
+        txt_number_d.setText(""+guessD);
+        txt_output.setText("");
+        generateNumbers();
+        btn_match.setEnabled(true);
     }
 
     private void matchBulls() {
@@ -222,8 +245,6 @@ public class MainActivity extends AppCompatActivity {
             bulls++;
         }
         if(bulls == 4){
-            //btn_reset.setEnabled(false);
-            //btn_match.setEnabled(false);
             txt_info.setText("Congratulations!");
         }
     }
